@@ -67,42 +67,63 @@ public class Application {
 		// create polymorphic array account list
 		Account[] accountList;
 		accountList = new Account[4];
-		accountList[0] = new CheckingAccount("Rem", 1500.0);
-		accountList[1] = new SavingAccount("", 1200.0);
-		accountList[2] = new CDAccount("", 1000.0);
-		accountList[3] = new LoanAccount("", -1500.0);
+		accountList[0] = new CheckingAccount("John Smith", 1500.0);
+		accountList[1] = new SavingAccount("William Hurt", 1200.0);
+		accountList[2] = new CDAccount("Woody Allison", 1000.0);
+		accountList[3] = new LoanAccount("Judi Foster", -1500.0);
 
-		//withdraw $400 from checking account
-		try {
-			System.out.println("Data: " + currentTime);
-			ret = accountList[0].withdraw(400.0);
-			System.out.println("Account <" + accountList[0].name() + "> withdraws $400.0");
-			System.out.println("Account <" + accountList[0].name() + "> now has $" + ret + " balance\n");
-		}
-		catch (Exception e) {
-			stdExceptionPrinting(e, accountList[0].balance());
-		}
+		System.out.println("\n<Checking Account>\n");
 
-		//withdraw $400 from checking account
-		try {
-			System.out.println("Data: " + currentTime);
-			ret = accountList[0].withdraw(400.0);
-			System.out.println("Account <" + accountList[0].name() + "> now withdraws $400.0");
-			System.out.println("Account <" + accountList[0].name() + "> now has $" + ret + " balance\n");
-		}
-		catch (Exception e) {
-			stdExceptionPrinting(e, accountList[0].balance());
+		//withdraw $400 from checking account for 2 times
+		for (int i = 0; i < 2; ++i) {
+			try {
+				System.out.println("Date: " + currentTime);
+				ret = accountList[0].withdraw(400.0);
+				System.out.println("Account <" + accountList[0].name() + "> withdraws $400.0");
+				System.out.println("Account <" + accountList[0].name() + "> now has $" + ret + " balance\n");
+			}
+			catch (Exception e) {
+				stdExceptionPrinting(e, accountList[0].balance());
+			}
 		}
 
 		//deposit $400 into checking account
 		try {
-			System.out.println("Data: " + currentTime);
+			System.out.println("Date: " + currentTime);
 			ret = accountList[0].deposit(400.0);
 			System.out.println("Account <" + accountList[0].name() + "> now deposits $400.0");
 			System.out.println("Account <" + accountList[0].name() + "> now has $" + ret + " balance\n");
 		}
 		catch (Exception e) {
 			stdExceptionPrinting(e, accountList[0].balance());
+		}
+
+		System.out.println("\n<Saving Account>\n");
+
+		//withdraw $300 from saving account for 4 times
+		for (int i = 0; i < 4; ++i) {
+			try {
+				System.out.println("Date: " + currentTime);
+				ret = accountList[1].withdraw(300.0);
+				System.out.println("Account <" + accountList[1].name() + "> withdraws $300.0");
+				System.out.println("Account <" + accountList[1].name() + "> now has $" + ret + " balance\n");
+			}
+			catch (Exception e) {
+				stdExceptionPrinting(e, accountList[1].balance());
+			}
+		}
+
+		//deposit $300 into saving account for 3 times
+		for (int i = 0; i < 3; ++i) {
+			try {
+				System.out.println("Date: " + currentTime);
+				ret = accountList[1].deposit(300.0);
+				System.out.println("Account <" + accountList[1].name() + "> deposit $300.0");
+				System.out.println("Account <" + accountList[1].name() + "> now has $" + ret + " balance\n");
+			}
+			catch (Exception e) {
+				stdExceptionPrinting(e, accountList[1].balance());
+			}
 		}
 	}
 

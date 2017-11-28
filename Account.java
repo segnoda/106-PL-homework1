@@ -58,9 +58,11 @@ public abstract class Account {
 		return(accountBalance);
 	}
 
-	public double deposit(double amount) throws BankingException{
-		accountBalance += amount;
-		return(accountBalance);
+	abstract double deposit(double amount, Date depositDate) throws BankingException;
+
+	public double deposit(double amount) throws BankingException {
+		Date depositDate = new Date();
+		return(deposit(amount, depositDate));
 	}
 
 	abstract double withdraw(double amount, Date withdrawDate) throws BankingException;
@@ -104,10 +106,15 @@ class CheckingAccount extends Account implements FullFunctionalAccount {
 		lastInterestDate = openDate;
 	}
 
+	public double deposit(double amount, Date depositDate) throws BankingException {
+		accountBalance += amount;
+		return(accountBalance);
+	}
+
 	public double withdraw(double amount, Date withdrawDate) throws BankingException {
 		// minimum balance is 1000, raise exception if violated
 		if ((accountBalance  - amount) < 1000) {
-			throw new BankingException ("Underdraft from checking account name:" +
+			throw new BankingException ("Underdraft from checking account name: " +
 					accountName);
 		} else {
 			accountBalance -= amount;
@@ -143,12 +150,57 @@ class CheckingAccount extends Account implements FullFunctionalAccount {
  */
 
 class SavingAccount extends Account implements FullFunctionalAccount {
-	SavingAccount(String s, double firstDeposit) {
 
+	SavingAccount(String s, double firstDeposit) {
+		accountName = s;
+		accountBalance = firstDeposit;
+		accountInterestRate = 0.12;
+		openDate = new Date();
+		lastInterestDate = openDate;
 	}
-	public double withdraw(double amount, Date withdrawDate) throws BankingException {
+
+	SavingAccount(String s, double firstDeposit, Date firstDate) {
+		accountName = s;
+		accountBalance = firstDeposit;
+		accountInterestRate = 0.12;
+		openDate = firstDate;
+		lastInterestDate = openDate;
+	}
+
+	ArrayList<Calendar> transactionList = new ArrayList<Calendar>();
+
+	private double checkFirstThreeTimes(Date transactionDate) {
+		int transactionTimes = 0;
+		Calendar transactionCalendar = Calendar.getInstance();
+		transactionCalendar.setTime(transactionDate);
+		transactionList.add(transactionCalendar);
+		for (int i = 0; i < transactionList.size(); ++i) {
+			if (transactionCalendar.get(Calendar.MONTH) == transactionList.get(i).get(Calendar.MONTH)
+					&& transactionCalendar.get(Calendar.YEAR) == transactionList.get(i).get(Calendar.YEAR)) {
+				++transactionTimes;
+			}
+		}
+		if (transactionTimes > 3) return 1.0;
+		return 0.0;
+	}
+
+	public double deposit(double amount, Date depositDate) throws BankingException {
+		double fee = checkFirstThreeTimes(depositDate);
+		accountBalance += (amount - fee);
 		return(accountBalance);
 	}
+
+	public double withdraw(double amount, Date withdrawDate) throws BankingException {
+		double fee = checkFirstThreeTimes(withdrawDate);
+		if ((accountBalance - amount - fee) < 0) {
+			throw new BankingException ("Underdraft from saving account name: " +
+					accountName);
+		} else {
+			accountBalance -= (amount + fee);
+			return accountBalance;
+		}
+	}
+
 	public double computeInterest (Date interestDate) throws BankingException {
 		return(accountBalance);
 	}
@@ -167,6 +219,10 @@ class SavingAccount extends Account implements FullFunctionalAccount {
 class CDAccount extends Account implements FullFunctionalAccount {
 	CDAccount(String s, double firstDeposit) {
 
+	}
+	public double deposit(double amount, Date depositDate) throws BankingException {
+		accountBalance += amount;
+		return(accountBalance);
 	}
 	public double withdraw(double amount, Date withdrawDate) throws BankingException {
 		return(accountBalance);
@@ -189,6 +245,10 @@ class CDAccount extends Account implements FullFunctionalAccount {
 class LoanAccount extends Account implements FullFunctionalAccount {
 	LoanAccount(String s, double firstDeposit) {
 
+	}
+	public double deposit(double amount, Date depositDate) throws BankingException {
+		accountBalance += amount;
+		return(accountBalance);
 	}
 	public double withdraw(double amount, Date withdrawDate) throws BankingException {
 		return(accountBalance);
