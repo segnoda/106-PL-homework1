@@ -217,15 +217,46 @@ class SavingAccount extends Account implements FullFunctionalAccount {
  */
 
 class CDAccount extends Account implements FullFunctionalAccount {
-	CDAccount(String s, double firstDeposit) {
 
+	Calendar expiryDate = Calendar.getInstance();
+
+	CDAccount(String s, double firstDeposit) {
+		accountName = s;
+		accountBalance = firstDeposit;
+		accountInterestRate = 0.12;
+		openDate = new Date();
+		lastInterestDate = openDate;
+
+		expiryDate.setTime(openDate);
+		expiryDate.add(Calendar.MONTH, 12);
 	}
+
+	CDAccount(String s, double firstDeposit, Date firstDate) {
+		accountName = s;
+		accountBalance = firstDeposit;
+		accountInterestRate = 0.12;
+		openDate = firstDate;
+		lastInterestDate = openDate;
+
+		expiryDate.setTime(openDate);
+		expiryDate.add(Calendar.MONTH, 12);
+	}
+
 	public double deposit(double amount, Date depositDate) throws BankingException {
-		accountBalance += amount;
-		return(accountBalance);
+		throw new BankingException ("Can't deposit into the CD account name: " +
+				accountName);
 	}
 	public double withdraw(double amount, Date withdrawDate) throws BankingException {
-		return(accountBalance);
+		double fee = 0.0;
+		if (withdrawDate.before(expiryDate.getTime())) fee = 250.0;
+
+		if ((accountBalance - amount - fee) < 0) {
+			throw new BankingException ("Underdraft from CD account name: " +
+					accountName);
+		} else {
+			accountBalance -= (amount + fee);
+			return(accountBalance); 
+		}
 	}
 	public double computeInterest (Date interestDate) throws BankingException {
 		return(accountBalance);
