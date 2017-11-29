@@ -202,7 +202,21 @@ class SavingAccount extends Account implements FullFunctionalAccount {
 	}
 
 	public double computeInterest (Date interestDate) throws BankingException {
-		return(accountBalance);
+		if (interestDate.before(lastInterestDate)) {
+			throw new BankingException ("Invalid date to compute interest for account name" +
+					accountName);
+		}
+
+		int numberOfMonths = ((int) ((interestDate.getTime()
+					- lastInterestDate.getTime())
+				/ 86400000.0)) / 30;
+		System.out.println("Number of months since last interest is " + numberOfMonths);
+        double interestEarned = (double) numberOfMonths / 12.0 *
+			accountInterestRate * accountBalance;
+		System.out.println("Interest earned is " + interestEarned); 
+        lastInterestDate = interestDate;
+        accountBalance += interestEarned;
+        return(accountBalance);
 	}
 }
 
@@ -259,6 +273,27 @@ class CDAccount extends Account implements FullFunctionalAccount {
 		}
 	}
 	public double computeInterest (Date interestDate) throws BankingException {
+		if (interestDate.before(lastInterestDate)) {
+			throw new BankingException ("Invalid date to compute interest for account name: " +
+					accountName);
+		}
+		int numberOfMonths;
+		if (interestDate.after(expiryDate.getTime())) {
+			numberOfMonths = ((int) ((expiryDate.getTime().getTime()
+						- lastInterestDate.getTime())
+					/ 86400000.0)) / 30;
+			System.out.println("Number of months since last interest to the end of the duration is " + numberOfMonths);
+		} else {
+			numberOfMonths = ((int) ((interestDate.getTime() 
+						- lastInterestDate.getTime())
+					/ 86400000.0)) / 30;
+			System.out.println("Number of months since last interest is " + numberOfMonths);
+		}
+		double interestEarned = (double) numberOfMonths / 12.0 *
+			accountInterestRate * accountBalance;
+		System.out.println("Interest earned is " + interestEarned); 
+		lastInterestDate = interestDate;
+		accountBalance += interestEarned;
 		return(accountBalance);
 	}
 }
@@ -302,6 +337,20 @@ class LoanAccount extends Account implements FullFunctionalAccount {
 	}
 
 	public double computeInterest (Date interestDate) throws BankingException {
+		if (interestDate.before(lastInterestDate)) {
+			throw new BankingException ("Invalid date to compute interest for account name: " +
+					accountName);
+		}
+
+		int numberOfMonths = ((int) ((interestDate.getTime() 
+					- lastInterestDate.getTime())
+				/ 86400000.0)) / 30;
+		System.out.println("Number of months since last interest is " + numberOfMonths);
+		double interestEarned = (double) numberOfMonths / 12.0 *
+			accountInterestRate * accountBalance * (-1);
+		System.out.println("Interest earned is " + interestEarned); 
+		lastInterestDate = interestDate;
+		accountBalance += interestEarned;
 		return(accountBalance);
 	}
 }
