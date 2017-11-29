@@ -38,6 +38,13 @@ public class Application {
 		accountList[2] = new CDAccount("Woody Allison", 1000.0, dateList[0]);
 		accountList[3] = new LoanAccount("Judi Foster", -1500.0, dateList[0]);
 
+		System.out.println("\n<Account Information>\n");
+
+		for (int i = 0; i < 4; i++) {
+			System.out.println("Open Date: " + accountList[i].openDate);
+			System.out.println("Account <" + accountList[i].name() + "> now has $" + accountList[i].balance() + " balance\n");
+		}
+
 		System.out.println("\n<Checking Account>\n");
 
 		System.out.println("<---- withdraw $400 from checking account for 2 times ---->");
