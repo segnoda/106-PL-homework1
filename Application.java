@@ -189,7 +189,7 @@ public class Application {
 
 		System.out.println("\n<Special Case>\n");
 
-		System.out.println("<---- withdraw $300 from CD Account after 12 months since Jan 2017 ---->");
+		System.out.println("<---- withdraw $300 from CD account after 12 months since Jan 2017 ---->");
 		try {
 			System.out.println("Date: " + dateList[12]);
 			ret = accountList[2].withdraw(300.0, dateList[12]);
