@@ -40,7 +40,7 @@ public class Application {
 
 		System.out.println("\n<Checking Account>\n");
 
-		//withdraw $400 from checking account for 2 times
+		System.out.println("<---- withdraw $400 from checking account for 2 times ---->");
 		for (int i = 0; i < 2; ++i) {
 			try {
 				System.out.println("Date: " + dateList[1]);
@@ -53,7 +53,7 @@ public class Application {
 			}
 		}
 
-		//deposit $400 into checking account
+		System.out.println("<---- deposit $400 into checking account ---->");
 		try {
 			System.out.println("Date: " + dateList[1]);
 			ret = accountList[0].deposit(400.0, dateList[1]);
@@ -66,7 +66,7 @@ public class Application {
 
 		System.out.println("\n<Saving Account>\n");
 
-		//deposit $100 into saving account for 4 times in March 2017
+		System.out.println("<---- deposit $100 into saving account for 4 times in March 2017 ---->");
 		for (int i = 0; i < 4; ++i) {
 			try {
 				System.out.println("Date: " + dateList[2]);
@@ -79,7 +79,7 @@ public class Application {
 			}
 		}
 
-		//withdraw $500 from saving account for 4 times in April 2017
+		System.out.println("<---- withdraw $500 from saving account for 4 times in April 2017 ---->");
 		for (int i = 0; i < 4; ++i) {
 			try {
 				System.out.println("Date: " + dateList[3]);
@@ -94,7 +94,7 @@ public class Application {
 
 		System.out.println("\n<CD Account>\n");
 
-		//withdraw $300 from CD Account for 2 times in May 2017 (Still within 12 months)
+		System.out.println("<---- withdraw $300 from CD Account for 2 times in May 2017 (Still within 12 months) ---->");
 		for (int i = 0; i < 2; ++i) {
 			try {
 				System.out.println("Date: " + dateList[4]);
@@ -107,7 +107,7 @@ public class Application {
 			}
 		}
 
-		//deposit $300 into CD Account
+		System.out.println("<---- deposit $300 into CD Account ---->");
 		try {
 			System.out.println("Date: " + dateList[4]);
 			ret = accountList[2].deposit(300.0, dateList[4]);
@@ -120,7 +120,7 @@ public class Application {
 
 		System.out.println("\n<Loan Account>\n");
 
-		//withdraw $300 from Loan Account
+		System.out.println("<---- withdraw $300 from Loan Account ---->");
 		try {
 			System.out.println("Date: " + dateList[5]);
 			ret = accountList[3].withdraw(300.0, dateList[5]);
@@ -131,7 +131,7 @@ public class Application {
 			stdExceptionPrinting(e, accountList[3].balance());
 		}
 
-		//deposit $300 into Loan Account
+		System.out.println("<---- deposit $300 into Loan Account ---->");
 		try {
 			System.out.println("Date: " + dateList[5]);
 			ret = accountList[3].deposit(300.0, dateList[5]);
@@ -144,7 +144,7 @@ public class Application {
 
 		System.out.println("\n<Compute Interest>\n");
 
-		//compute interest for all accounts in July 2017
+		System.out.println("<---- compute interest for all accounts in July 2017 ---->");
 		for (int i = 0; i < 4; ++i) {
 			try {
 				System.out.println("Date: " + dateList[6]);
@@ -156,7 +156,7 @@ public class Application {
 			}
 		}
 
-		//compute interest for all accounts in July 2018
+		System.out.println("<---- compute interest for all accounts in July 2018 ---->");
 		for (int i = 0; i < 4; ++i) {
 			try {
 				System.out.println("Date: " + dateList[18]);
@@ -168,7 +168,7 @@ public class Application {
 			}
 		}
 
-		//compute interest for all accounts in Jan 2018
+		System.out.println("<---- compute interest for all accounts in Jan 2018 ---->");
 		for (int i = 0; i < 4; ++i) {
 			try {
 				System.out.println("Date: " + dateList[13]);
@@ -182,7 +182,7 @@ public class Application {
 
 		System.out.println("\n<Special Case>\n");
 
-		//withdraw $300 from CD Account after 12 months since Jan 2017
+		System.out.println("<---- withdraw $300 from CD Account after 12 months since Jan 2017 ---->");
 		try {
 			System.out.println("Date: " + dateList[12]);
 			ret = accountList[2].withdraw(300.0, dateList[12]);
