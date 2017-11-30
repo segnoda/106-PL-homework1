@@ -107,6 +107,9 @@ class CheckingAccount extends Account implements FullFunctionalAccount {
 	}
 
 	public double deposit(double amount, Date depositDate) throws BankingException {
+		if (amount < 0) {
+			throw new BankingException ("Deposit amount can't under $0");
+		}
 		accountBalance += amount;
 		return(accountBalance);
 	}
@@ -116,6 +119,8 @@ class CheckingAccount extends Account implements FullFunctionalAccount {
 		if ((accountBalance  - amount) < 1000) {
 			throw new BankingException ("Underdraft from checking account name: " +
 					accountName);
+		} else if (amount < 0) {
+			throw new BankingException ("Withdraw amount can't under $0");
 		} else {
 			accountBalance -= amount;
 			return(accountBalance);
@@ -185,6 +190,9 @@ class SavingAccount extends Account implements FullFunctionalAccount {
 	}
 
 	public double deposit(double amount, Date depositDate) throws BankingException {
+		if (amount < 0) {
+			throw new BankingException ("Deposit amount can't under $0");
+		}
 		double fee = checkFirstThreeTimes(depositDate);
 		accountBalance += (amount - fee);
 		return(accountBalance);
@@ -195,6 +203,8 @@ class SavingAccount extends Account implements FullFunctionalAccount {
 		if ((accountBalance - amount - fee) < 0) {
 			throw new BankingException ("Underdraft from saving account name: " +
 					accountName);
+		} else if (amount < 0) {
+			throw new BankingException ("Withdraw amount can't under $0");
 		} else {
 			accountBalance -= (amount + fee);
 			return accountBalance;
@@ -267,6 +277,8 @@ class CDAccount extends Account implements FullFunctionalAccount {
 		if ((accountBalance - amount - fee) < 0) {
 			throw new BankingException ("Underdraft from CD account name: " +
 					accountName);
+		} else if (amount < 0) {
+			throw new BankingException ("Withdraw amount can't under $0");
 		} else {
 			accountBalance -= (amount + fee);
 			return(accountBalance); 
@@ -326,8 +338,29 @@ class LoanAccount extends Account implements FullFunctionalAccount {
 		lastInterestDate = openDate;
 	}
 
+	ArrayList<Calendar> transactionList = new ArrayList<Calendar>();
+
+	private double checkFirstThreeTimes(Date transactionDate) {
+		int transactionTimes = 0;
+		Calendar transactionCalendar = Calendar.getInstance();
+		transactionCalendar.setTime(transactionDate);
+		transactionList.add(transactionCalendar);
+		for (int i = 0; i < transactionList.size(); ++i) {
+			if (transactionCalendar.get(Calendar.MONTH) == transactionList.get(i).get(Calendar.MONTH)
+					&& transactionCalendar.get(Calendar.YEAR) == transactionList.get(i).get(Calendar.YEAR)) {
+				++transactionTimes;
+			}
+		}
+		if (transactionTimes > 3) return 1.0;
+		return 0.0;
+	}
+
 	public double deposit(double amount, Date depositDate) throws BankingException {
-		accountBalance += amount;
+		if (amount < 0) {
+			throw new BankingException ("Deposit amount can't under $0");
+		}
+		double fee = checkFirstThreeTimes(depositDate);
+		accountBalance += (amount - fee);
 		return(accountBalance);
 	}
 
@@ -347,7 +380,7 @@ class LoanAccount extends Account implements FullFunctionalAccount {
 				/ 86400000.0)) / 30;
 		System.out.println("Number of months since last interest is " + numberOfMonths);
 		double interestEarned = (double) numberOfMonths / 12.0 *
-			accountInterestRate * accountBalance * (-1);
+			accountInterestRate * accountBalance;
 		System.out.println("Interest earned is " + interestEarned); 
 		lastInterestDate = interestDate;
 		accountBalance += interestEarned;
